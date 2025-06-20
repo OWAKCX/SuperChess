@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
 import { Clock, Trophy, Target, Zap, Brain, Star } from "lucide-react"
 import type { Language, AIDifficulty, GameMode } from "@/app/page"
 import { useTranslation } from "@/hooks/use-translation"
@@ -94,23 +95,24 @@ export function GameStatus({
           <div className="space-y-3">
             {/* Current Turn */}
             <div className="flex items-center justify-between">
-              <span className="text-gray-300">Current Turn:</span>
-              <div 
-                className={`px-3 py-1 rounded-full text-sm font-medium ${currentPlayer === 'white' ? 'bg-blue-500' : 'bg-red-500'} text-white`}
+              <span className="text-gray-300">{t('currentTurn')}:</span>
+              <Badge 
+                variant={currentPlayer === 'white' ? 'default' : 'secondary'}
+                className={`${currentPlayer === 'white' ? 'bg-blue-500' : 'bg-red-500'} text-white`}
               >
-                {currentPlayer === 'white' ? 'White' : 'Black'} 
+                {currentPlayer === 'white' ? t('white') : t('black')} 
                 {currentPlayer === playerSide && ' (You)'}
-              </div>
+              </Badge>
             </div>
 
             {/* Game Mode */}
             {gameMode === 'ai' && (
               <div className="flex items-center justify-between">
-                <span className="text-gray-300">Opponent:</span>
-                <div className={`${getAILevelColor()} text-white flex items-center space-x-1 px-3 py-1 rounded-full text-sm font-medium`}>
+                <span className="text-gray-300">{t('opponent')}:</span>
+                <Badge className={`${getAILevelColor()} text-white flex items-center space-x-1`}>
                   {getAILevelIcon()}
-                  <span>AI ({aiLevel})</span>
-                </div>
+                  <span>{t('ai')} ({t(aiLevel)})</span>
+                </Badge>
               </div>
             )}
 
@@ -125,7 +127,7 @@ export function GameStatus({
               </div>
               {gameStatus === 'check' && (
                 <div className="text-red-400 text-sm mt-1 animate-pulse">
-                  ⚠️ King in Check!
+                  ⚠️ {t('kingInCheck')}
                 </div>
               )}
             </div>
@@ -137,16 +139,16 @@ export function GameStatus({
       <Card className="bg-white/10 backdrop-blur-md border-white/20">
         <CardContent className="p-6">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white">Move History</h3>
-            <div className="border border-white/20 text-white px-3 py-1 rounded-full text-sm">
-              {Math.ceil(moveHistory.length / 2)} moves
-            </div>
+            <h3 className="text-lg font-semibold text-white">{t('moveHistory')}</h3>
+            <Badge variant="outline" className="border-white/20 text-white">
+              {Math.ceil(moveHistory.length / 2)} {t('moves')}
+            </Badge>
           </div>
           
           <div className="max-h-48 overflow-y-auto space-y-1">
             {moveHistory.length === 0 ? (
               <div className="text-gray-400 text-center py-4">
-                No moves yet
+                {t('noMovesYet')}
               </div>
             ) : (
               <div className="grid grid-cols-2 gap-2 text-sm">
@@ -169,7 +171,7 @@ export function GameStatus({
           <CardContent className="p-6 text-center">
             <Trophy className="w-12 h-12 text-yellow-400 mx-auto mb-3" />
             <h3 className="text-xl font-bold text-yellow-400 mb-2">
-              Game Over!
+              {t('gameOver')}
             </h3>
             <p className="text-white">
               {getStatusMessage()}

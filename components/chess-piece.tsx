@@ -2,6 +2,7 @@
 
 import type { PieceType, PieceColor as ChessPieceColor } from "@/types/chess"
 import type { PieceColor } from "@/app/page"
+import { ChessPieceSVG } from "./chess-piece-svg-enhanced"
 
 interface PieceColors {
   white: PieceColor
@@ -12,15 +13,6 @@ interface ChessPieceProps {
   type: PieceType
   color: ChessPieceColor
   playerColors: PieceColors
-}
-
-const pieceSymbols: Record<PieceType, { white: string; black: string }> = {
-  king: { white: "♔", black: "♚" },
-  queen: { white: "♕", black: "♛" },
-  rook: { white: "♖", black: "♜" },
-  bishop: { white: "♗", black: "♝" },
-  knight: { white: "♘", black: "♞" },
-  pawn: { white: "♙", black: "♟" },
 }
 
 const colorMap: Record<PieceColor, string> = {
@@ -35,9 +27,24 @@ const colorMap: Record<PieceColor, string> = {
 }
 
 export function ChessPiece({ type, color, playerColors }: ChessPieceProps) {
-  const symbol = pieceSymbols[type][color]
   const selectedColor = color === "white" ? playerColors.white : playerColors.black
   const textColor = colorMap[selectedColor]
 
-  return <span className={`text-4xl sm:text-5xl ${textColor} drop-shadow-sm`}>{symbol}</span>
+  // Fallback to Unicode symbols if SVG doesn't work
+  const unicodeSymbols: Record<string, string> = {
+    k: color === 'white' ? '♔' : '♚',  // king
+    q: color === 'white' ? '♕' : '♛',  // queen
+    r: color === 'white' ? '♖' : '♜',  // rook
+    b: color === 'white' ? '♗' : '♝',  // bishop
+    n: color === 'white' ? '♘' : '♞',  // knight
+    p: color === 'white' ? '♙' : '♟'   // pawn
+  }
+
+  return (
+    <div className={`w-8 h-8 sm:w-10 sm:h-10 ${textColor} drop-shadow-lg transition-all duration-200 hover:scale-110 cursor-pointer`}>
+      <div className="w-full h-full flex items-center justify-center text-2xl sm:text-3xl">
+        {unicodeSymbols[type] || '?'}
+      </div>
+    </div>
+  )
 }
