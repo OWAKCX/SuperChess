@@ -17,8 +17,31 @@ import { useTranslation } from "@/hooks/use-translation"
 
 export type Language = "en" | "sr" | "ru"
 export type GameMode = "ai" | "local"
-export type PieceColor = "red" | "blue" | "green" | "pink" | "yellow" | "orange"
+export type PieceColor =
+  | "red"
+  | "blue"
+  | "green"
+  | "pink"
+  | "yellow"
+  | "orange"
+  | "black"
+  | "white"
 export type AIDifficulty = "easy" | "medium" | "hard" | "expert"
+
+// Types shared with various components
+export type AILevel = AIDifficulty
+export type PlayerSide = "white" | "black"
+export interface PieceColors {
+  white: PieceColor
+  black: PieceColor
+}
+export interface GameSettings {
+  mode: GameMode
+  colors: PieceColors
+  playerSide: PlayerSide
+  aiLevel: AILevel
+}
+export type PuzzleType = "custom" | "checkmate" | "trades"
 
 interface User {
   id: string
